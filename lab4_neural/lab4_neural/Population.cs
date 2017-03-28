@@ -8,5 +8,16 @@ namespace lab4_neural
 {
     class Population
     {
+        HashSet<Individual> population;
+
+        public Population()
+        {
+            population = new HashSet<Individual>();
+        }
+
+        public void AddToPopulation(Individual individual)
+        {
+            population.Add(individual);
+        }
     }
 }
