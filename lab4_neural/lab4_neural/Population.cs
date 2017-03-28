@@ -15,7 +15,7 @@ namespace lab4_neural
             population = new HashSet<Individual>();
         }
 
-        public void AddToPopulation(Individual individual)
+        public void AddIndividual(Individual individual)
         {
             population.Add(individual);
         }

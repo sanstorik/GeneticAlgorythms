@@ -10,6 +10,9 @@ namespace lab4_neural
     {
         static void Main(string[] args)
         {
+            GeneticAlgorythm ga = new GeneticAlgorythm();
+
+            Console.ReadLine();
         }
     }
 }
