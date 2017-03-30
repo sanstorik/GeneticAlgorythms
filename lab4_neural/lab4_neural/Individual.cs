@@ -16,7 +16,6 @@ namespace lab4_neural
         {
             this.chromosome = chromosome;
             functionProbability = EvaluateFunctionProbability(chromosome.GetX1(), chromosome.GetX2());
-            //Console.WriteLine(chromosome.GetX1() + " " + chromosome.GetX2());
         }
 
         public Chromosome GetChromosome()

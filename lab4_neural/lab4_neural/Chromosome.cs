@@ -5,16 +5,18 @@ namespace lab4_neural
     class Chromosome
     {
         char[] genes;
+        Random rand;
 
         public Chromosome(params char[] genes)
         {
             this.genes = genes;
+            rand = new Random();
         }
 
         public Chromosome(int chromosomeValue)
         {
             genes = new char[16];
-
+            rand = new Random();
             char[] tempGenes = Convert.ToString(chromosomeValue, 2).ToCharArray();
 
             int lengthDiff = genes.Length - tempGenes.Length;
@@ -22,6 +24,26 @@ namespace lab4_neural
 
             for (int i = lengthDiff, j = 0; i < genes.Length; i++, j++)
                 genes[i] = tempGenes[j];
+        }
+
+        public Chromosome Mutate()
+        {
+            int randomGene = rand.Next(0, genes.Length);
+            char[] mutatedGenes = genes;
+            mutatedGenes[randomGene] = genes[randomGene] == '0' ? '1' : '0';
+
+            return new Chromosome(genes);
+        }
+
+        public Chromosome Crossover(Chromosome secondParent)
+        {
+            int indexOfCrossover = rand.Next(1, genes.Length);
+
+            char[] crossedGenes = genes;
+            for (int geneIndex = indexOfCrossover; geneIndex < genes.Length; geneIndex++)
+                crossedGenes[geneIndex] = secondParent.genes[geneIndex];
+
+            return new Chromosome(crossedGenes);
         }
 
         public float GetX1()

@@ -35,6 +35,12 @@ namespace lab4_neural
             return step;
         }
 
+        void EvaluteFunctionStep()
+        {
+            float length = Math.Abs(MIN_X) + Math.Abs(MAX_X);
+            step = length / (float)Math.Sqrt(INDIVIDUALS_COUNT);
+        }
+
         void CreateIndividuals()
         {
             for (int i = 0; i < INDIVIDUALS_COUNT; i++)
@@ -53,11 +59,6 @@ namespace lab4_neural
                 individuals[i].SetProbability(individuals[i].GetFunctionProbability() / probabilitySum);
         }
 
-        void EvaluteFunctionStep()
-        {
-            float length = Math.Abs(MIN_X) + Math.Abs(MAX_X);
-            step = length / (float)Math.Sqrt(INDIVIDUALS_COUNT);
-        }
 
         void InitializeInitialPopulation()
         {
@@ -68,7 +69,7 @@ namespace lab4_neural
             {
                 randomIndividualIndex = rand.Next(0, INDIVIDUALS_COUNT - 1);
                 population.AddIndividual(individuals[ randomIndividualIndex ]);
-                Console.WriteLine(individuals[randomIndividualIndex].GetChromosome().GetX1() + " " + individuals[randomIndividualIndex].GetChromosome().GetX2());
+                Console.WriteLine(individuals[randomIndividualIndex].GetProbability());
             }
         }
 
