@@ -12,7 +12,7 @@ namespace lab4_neural
         const int INDIVIDUALS_COUNT = 65536;
         const int INITIAL_POPULATION_COUNT = 1000;
         const float REPROPUCTION_PROBABILITY = 0.45f;
-        const float GENE_MUTATION_PROBABILITY = 0.015f;
+        const float GENE_MUTATION_PROBABILITY = 0.01f;
         public const float MIN_X = -5.12f;
         public const float MAX_X = 5.12f;
         Random rand;
@@ -46,7 +46,8 @@ namespace lab4_neural
                 Console.WriteLine("\nNEXT GENERATION \n");
             }
 
-            Console.WriteLine("\nBEST INDIVIDUAL = " + bestChild.GetFunctionProbability() + " \n x1=" + bestChild.GetChromosome().GetX1() + "  x2 = " + bestChild.GetChromosome().GetX2());
+            Console.WriteLine("\nBEST INDIVIDUAL ={0}   \n x1={1}   x2={2}", 
+                bestChild.GetFunctionProbability(), bestChild.GetChromosome().GetX1(), bestChild.GetChromosome().GetX2());
             Console.WriteLine(bestChild.GetChromosome());
         }
 
@@ -120,7 +121,7 @@ namespace lab4_neural
                 if (rand.NextDouble() <= REPROPUCTION_PROBABILITY)
                 {
                     firstParent = GetRandomIndividual(bestIndividuals);
-                    secondParent = GetTheClosestIndividual(firstParent, bestIndividuals);
+                    secondParent = GetTheFarestIndividual(firstParent, bestIndividuals);
 
                     childs.Enqueue(firstParent.Reproduction(secondParent));
                 }
@@ -150,10 +151,11 @@ namespace lab4_neural
             return individuals[rand.Next(0, individuals.Length)];
         }
 
-        Individual GetTheClosestIndividual(Individual firstParent, Individual[] population)
+        //outbreeding. var4
+        Individual GetTheFarestIndividual(Individual firstParent, Individual[] population)
         {
             Individual closest = population.FirstOrDefault(
-                (secondParent) => Math.Abs(secondParent.GetProbability() - firstParent.GetProbability()) <= 1f);
+                (secondParent) => Math.Abs(secondParent.GetProbability() - firstParent.GetProbability()) >= 0.4f);
 
             if (closest == null)
                 closest = population[0];
@@ -170,7 +172,7 @@ namespace lab4_neural
             for (int i = 0; i < population.GetPopulationCapacity(); i++)
             {
                 if (bestChild.GetFunctionProbability() < population.GetIndividual(i).GetFunctionProbability())
-                    bestChild = population.GetIndividual(i);
+                    bestChild = population.GetIndividual(i).CreateCopy();
 
                 probabilitySum += population.GetIndividual(i).GetFunctionProbability();
             }

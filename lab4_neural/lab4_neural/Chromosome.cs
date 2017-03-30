@@ -35,12 +35,16 @@ namespace lab4_neural
             return new Chromosome(genes);
         }
 
+        //two-pointed crossover
+        //inverse bits starting from first point
+        //ending on second point
         public Chromosome Crossover(Chromosome secondParent)
         {
-            int indexOfCrossover = rand.Next(1, genes.Length);
+            int firstCrossoverIndex = rand.Next(1, 8);
+            int secondCrossoverIndex = rand.Next(8, genes.Length);
 
             char[] crossedGenes = genes;
-            for (int geneIndex = indexOfCrossover; geneIndex < genes.Length; geneIndex++)
+            for (int geneIndex = firstCrossoverIndex; geneIndex < secondCrossoverIndex; geneIndex++)
                 crossedGenes[geneIndex] = secondParent.genes[geneIndex];
 
             return new Chromosome(crossedGenes);
@@ -54,6 +58,20 @@ namespace lab4_neural
         public float GetX2()
         {
             return GetGenesValue(8, genes.Length);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            Chromosome chromosome = (Chromosome)obj;
+            return ( chromosome.GetX1() + chromosome.GetX2() ).Equals(GetX1() + GetX2());
+        }
+
+        public override int GetHashCode()
+        {
+            return ((int)GetX1() ^ (int)GetX2()) ^ 0x228;
         }
 
         float GetGenesValue(int from, int to)

@@ -20,7 +20,8 @@ namespace lab4_neural
         {
             population = new List<Individual>();
             for (int i = 0; i < individuals.Length; i++)
-                population.Add(individuals[i]);
+                if (!population.Contains(individuals[i]))
+                    population.Add(individuals[i]);
         }
 
         public void AddIndividual(Individual individual)
@@ -51,7 +52,6 @@ namespace lab4_neural
         {
             return population.ToArray();
         }
-
 
         public Individual[] GetBestIndividuals()
         {
