@@ -40,8 +40,8 @@ namespace lab4_neural
 
         float EvaluateFunctionProbability(float x1, float x2)
         {
-            // return  20 + ( x1 * x1 ) + ( x2 * x2 ) - 10 * (float)Math.Cos(2 * Math.PI * x1) - 10 * (float)Math.Cos(2 * Math.PI * x2);
-            return ( Math.Abs(x1) ) + ( Math.Abs(x2) );
+            return  20 + ( x1 * x1 ) + ( x2 * x2 ) - 10 * (float)Math.Cos(2 * Math.PI * x1) - 10 * (float)Math.Cos(2 * Math.PI * x2);
+            //return ( Math.Abs(x1) ) + ( Math.Abs(x2) );
         }
 
         public float GetFunctionProbability()
