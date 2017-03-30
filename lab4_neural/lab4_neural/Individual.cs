@@ -23,6 +23,10 @@ namespace lab4_neural
             return chromosome;
         }
 
+        public Individual Reproduction(Individual secondParent)
+        {
+            return new Individual(chromosome.Crossover(secondParent.GetChromosome()));
+        }
 
         public void SetProbability(float probability)
         {

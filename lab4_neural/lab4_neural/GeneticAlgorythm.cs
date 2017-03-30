@@ -69,7 +69,12 @@ namespace lab4_neural
             {
                 randomIndividualIndex = rand.Next(0, INDIVIDUALS_COUNT - 1);
                 population.AddIndividual(individuals[ randomIndividualIndex ]);
-                Console.WriteLine(individuals[randomIndividualIndex].GetProbability());
+            }
+
+            var x = population.GetBestIndividuals();
+            foreach(var ind in x)
+            {
+                Console.WriteLine(ind.GetProbability());
             }
         }
 
