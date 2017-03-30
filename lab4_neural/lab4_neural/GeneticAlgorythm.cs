@@ -11,7 +11,7 @@ namespace lab4_neural
         static GeneticAlgorythm instance;
         const int INDIVIDUALS_COUNT = 65536;
         const int INITIAL_POPULATION_COUNT = 100;
-        const float REPROPUCTION_PROBABILITY = 0.25f;
+        const float REPROPUCTION_PROBABILITY = 0.3f;
         const float GENE_MUTATION_PROBABILITY = 0.015f;
         public const float MIN_X = -5.12f;
         public const float MAX_X = 5.12f;
@@ -32,7 +32,19 @@ namespace lab4_neural
             CreateIndividuals();
             InitializeInitialPopulation();
 
-            SelectBestIndividualsAndReproductThem();
+            for (int i = 0; i < 100; i++)
+            {
+                if (population.GetPopulationCapacity() <= 0)
+                    return;
+
+                UpdateProbabilityForPopulation(population);
+                Console.WriteLine("UPDATED");
+
+                Console.WriteLine("\n " + GetMediumFunctionValueInPopulation(population) + "\n");
+                SelectBestIndividualsAndReproductThem();
+
+                Console.WriteLine("\nNEXT GENERATION \n");
+            }
         }
 
         public float GetFunctionStep()
@@ -50,20 +62,19 @@ namespace lab4_neural
         {
             for (int i = 0; i < INDIVIDUALS_COUNT; i++)
                 individuals[i] = new Individual(new Chromosome(i));
-
-            SetProbabilityForIndividuals();
         }
 
-        void SetProbabilityForIndividuals()
+        void UpdateProbabilityForPopulation(Population population)
         {
+            population.UpdateAllIndividualProbabilities();
+
             float probabilitySum = 0;
-            for (int i = 0; i < INDIVIDUALS_COUNT; i++)
-                probabilitySum += individuals[i].GetFunctionProbability();
+            for (int i = 0; i < population.GetPopulationCapacity(); i++)
+                probabilitySum += population.GetIndividual(i).GetFunctionProbability();
 
-            for (int i = 0; i < INDIVIDUALS_COUNT; i++)
-                individuals[i].SetProbability(individuals[i].GetFunctionProbability() / probabilitySum);
+            for (int i = 0; i < population.GetPopulationCapacity(); i++)
+                population.GetIndividual(i).SetProbability(population.GetIndividual(i).GetFunctionProbability() / probabilitySum);
         }
-
 
         void InitializeInitialPopulation()
         {
@@ -85,9 +96,9 @@ namespace lab4_neural
 
             population = nextGeneration;
 
-            foreach(var individ in population.GetPopulation())
+            foreach (var individ in population.GetPopulation())
             {
-                Console.WriteLine(individ.GetFunctionProbability());
+                Console.WriteLine(individ.GetChromosome().GetX1() + " " + individ.GetChromosome().GetX2());
             }
 
             Console.WriteLine(population.GetPopulationCapacity());
@@ -138,14 +149,32 @@ namespace lab4_neural
 
         Individual GetTheClosestIndividual(Individual firstParent, Individual[] population)
         {
-            float probability = firstParent.GetProbability();
             Individual closest = population.FirstOrDefault(
-                (secondParent) => Math.Abs(secondParent.GetProbability() - firstParent.GetProbability()) <= 0.1f);
+                (secondParent) => Math.Abs(secondParent.GetProbability() - firstParent.GetProbability()) <= 1f);
 
             if (closest == null)
                 closest = population[0];
 
             return closest;
+        }
+
+        float GetMediumFunctionValueInPopulation(Population population)
+        {
+            float probabilitySum = 0;
+            Individual bestChild = population.GetIndividual(0);
+
+            for (int i = 0; i < population.GetPopulationCapacity(); i++)
+            {
+               // if(bestChild.)
+                probabilitySum += population.GetIndividual(i).GetFunctionProbability();
+            }
+
+            for (int i = 0; i < population.GetPopulationCapacity(); i++)
+            {
+                probabilitySum += population.GetIndividual(i).GetFunctionProbability();
+            }
+
+            return probabilitySum / population.GetPopulationCapacity();
         }
 
         public static GeneticAlgorythm GetInstance()

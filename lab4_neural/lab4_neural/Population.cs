@@ -9,7 +9,7 @@ namespace lab4_neural
     class Population
     {
         List<Individual> population;
-        const float PERCENT_OF_POPULATION_LIVES = 0.5f;
+        const float PERCENT_OF_POPULATION_LIVES = 0.45f;
 
         public Population()
         {
@@ -28,8 +28,17 @@ namespace lab4_neural
             population.Add(individual);
         }
 
+        public void UpdateAllIndividualProbabilities()
+        {
+            for (int i = 0; i < population.Count; i++)
+                population[i].UpdateProbability();
+        }
+
         public Individual GetIndividual(int index)
         {
+            if (index < 0)
+                return null;
+
             return population[index];
         }
 
@@ -42,6 +51,7 @@ namespace lab4_neural
         {
             return population.ToArray();
         }
+
 
         public Individual[] GetBestIndividuals()
         {
