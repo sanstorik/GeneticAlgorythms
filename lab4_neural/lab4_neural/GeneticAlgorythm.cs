@@ -10,8 +10,8 @@ namespace lab4_neural
     {
         static GeneticAlgorythm instance;
         const int INDIVIDUALS_COUNT = 65536;
-        const int INITIAL_POPULATION_COUNT = 100;
-        const float REPROPUCTION_PROBABILITY = 0.3f;
+        const int INITIAL_POPULATION_COUNT = 1000;
+        const float REPROPUCTION_PROBABILITY = 0.4f;
         const float GENE_MUTATION_PROBABILITY = 0.015f;
         public const float MIN_X = -5.12f;
         public const float MAX_X = 5.12f;
@@ -36,8 +36,6 @@ namespace lab4_neural
             {
                 if (population.GetPopulationCapacity() <= 0)
                     return;
-
-                UpdateProbabilityForPopulation(population);
                 Console.WriteLine("UPDATED");
 
                 Console.WriteLine("\n " + GetMediumFunctionValueInPopulation(population) + "\n");
@@ -95,10 +93,11 @@ namespace lab4_neural
             ReproductWithMutation(nextGeneration);
 
             population = nextGeneration;
+            UpdateProbabilityForPopulation(population);
 
             foreach (var individ in population.GetPopulation())
             {
-                Console.WriteLine(individ.GetChromosome().GetX1() + " " + individ.GetChromosome().GetX2());
+                Console.WriteLine(individ.GetChromosome().GetX1() + " " + individ.GetChromosome().GetX2() + " " + individ.GetFunctionProbability());
             }
 
             Console.WriteLine(population.GetPopulationCapacity());
@@ -133,7 +132,7 @@ namespace lab4_neural
             for (int i=0; i < nextGeneration.GetPopulationCapacity(); i++)
             {
                 // 16 - is count of genes
-                if (rand.NextDouble() <= GENE_MUTATION_PROBABILITY * 16)
+                if (rand.NextDouble() <= GENE_MUTATION_PROBABILITY)
                     mutatedIndividuals.Enqueue(
                         new Individual(nextGeneration.GetIndividual(i).GetChromosome().Mutate()));
             }
