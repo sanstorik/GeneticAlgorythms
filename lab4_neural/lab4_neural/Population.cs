@@ -8,11 +8,11 @@ namespace lab4_neural
 {
     class Population
     {
-        HashSet<Individual> population;
+        List<Individual> population;
 
         public Population()
         {
-            population = new HashSet<Individual>();
+            population = new List<Individual>();
         }
 
         public void AddIndividual(Individual individual)

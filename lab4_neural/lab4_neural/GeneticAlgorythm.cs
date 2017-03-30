@@ -8,16 +8,19 @@ namespace lab4_neural
 {
     class GeneticAlgorythm
     {
+        static GeneticAlgorythm instance;
         const int INDIVIDUALS_COUNT = 65536;
         const int INITIAL_POPULATION_COUNT = 100;
-        const float MIN_X = -5.12f;
-        const float MAX_X = 5.12f;
+        public const float MIN_X = -5.12f;
+        public const float MAX_X = 5.12f;
 
         Population population;
         Individual[] individuals;
         float step;
 
-        public GeneticAlgorythm()
+        private GeneticAlgorythm() { }
+
+        public void Solve()
         {
             population = new Population();
             individuals = new Individual[INDIVIDUALS_COUNT];
@@ -27,15 +30,15 @@ namespace lab4_neural
             InitializeInitialPopulation();
         }
 
+        public float GetFunctionStep()
+        {
+            return step;
+        }
+
         void CreateIndividuals()
         {
-            float xValue = 0;
             for (int i = 0; i < INDIVIDUALS_COUNT; i++)
-            {
                 individuals[i] = new Individual(new Chromosome(i));
-                individuals[i].EvaluateFunctionProbability(xValue, xValue);
-                xValue += step;
-            }
 
             SetProbabilityForIndividuals();
         }
@@ -53,13 +56,27 @@ namespace lab4_neural
         void EvaluteFunctionStep()
         {
             float length = Math.Abs(MIN_X) + Math.Abs(MAX_X);
-            step = length / INDIVIDUALS_COUNT;
+            step = length / (float)Math.Sqrt(INDIVIDUALS_COUNT);
         }
 
         void InitializeInitialPopulation()
         {
+            Random rand = new Random();
+            int randomIndividualIndex;
+
             for (int i = 0; i < INITIAL_POPULATION_COUNT; i++)
-                population.AddIndividual(individuals[i]);
+            {
+                randomIndividualIndex = rand.Next(0, INDIVIDUALS_COUNT - 1);
+                population.AddIndividual(individuals[ randomIndividualIndex ]);
+                Console.WriteLine(individuals[randomIndividualIndex].GetChromosome().GetX1() + " " + individuals[randomIndividualIndex].GetChromosome().GetX2());
+            }
+        }
+
+        public static GeneticAlgorythm GetInstance()
+        {
+            if (instance == null)
+                instance = new GeneticAlgorythm();
+            return instance;
         }
     }
 }

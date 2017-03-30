@@ -15,6 +15,8 @@ namespace lab4_neural
         public Individual(Chromosome chromosome)
         {
             this.chromosome = chromosome;
+            functionProbability = EvaluateFunctionProbability(chromosome.GetX1(), chromosome.GetX2());
+            //Console.WriteLine(chromosome.GetX1() + " " + chromosome.GetX2());
         }
 
         public Chromosome GetChromosome()
@@ -33,28 +35,14 @@ namespace lab4_neural
             return probability;
         }
 
-        public void EvaluateFunctionProbability(float x1, float x2)
+        float EvaluateFunctionProbability(float x1, float x2)
         {
-            functionProbability = 20 + ( x1 * x1 ) + ( x2 * x2 ) - 10 * (float)Math.Cos(2 * Math.PI * x1) - 10 * (float)Math.Cos(2 * Math.PI * x2);
+            return  20 + ( x1 * x1 ) + ( x2 * x2 ) - 10 * (float)Math.Cos(2 * Math.PI * x1) - 10 * (float)Math.Cos(2 * Math.PI * x2);
         }
 
         public float GetFunctionProbability()
         {
             return functionProbability;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return this == null;
-
-            Individual ind = (Individual)obj;
-            return ind.chromosome.GetChromosomeValue() == chromosome.GetChromosomeValue();
-        }
-
-        public override int GetHashCode()
-        {
-            return chromosome.GetChromosomeValue();
         }
     }
 }

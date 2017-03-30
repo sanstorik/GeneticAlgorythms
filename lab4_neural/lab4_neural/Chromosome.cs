@@ -17,21 +17,30 @@ namespace lab4_neural
 
             char[] tempGenes = Convert.ToString(chromosomeValue, 2).ToCharArray();
 
-            int lengthDiff = this.genes.Length - tempGenes.Length;
+            int lengthDiff = genes.Length - tempGenes.Length;
             CompleteGenesWithZeroes(lengthDiff);
 
             for (int i = lengthDiff, j = 0; i < genes.Length; i++, j++)
                 genes[i] = tempGenes[j];
         }
 
-        public int GetChromosomeValue()
+        public float GetX1()
+        {
+            return GetGenesValue(0, 8);
+        }
+
+        public float GetX2()
+        {
+            return GetGenesValue(8, genes.Length);
+        }
+
+        float GetGenesValue(int from, int to)
         {
             string genesValue = string.Empty;
+            for (int i = from; i < to; i++)
+                genesValue += genes[i];
 
-            foreach (var gene in genes)
-                genesValue += gene;
-
-            return Convert.ToInt32(genesValue, 2);
+            return GeneticAlgorythm.MIN_X + ( Convert.ToInt32(genesValue, 2) * GeneticAlgorythm.GetInstance().GetFunctionStep() );
         }
 
         void CompleteGenesWithZeroes(int lengthDiff)
