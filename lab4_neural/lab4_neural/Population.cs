@@ -16,6 +16,13 @@ namespace lab4_neural
             population = new List<Individual>();
         }
 
+        public Population(Individual[] individuals)
+        {
+            population = new List<Individual>();
+            for (int i = 0; i < individuals.Length; i++)
+                population.Add(individuals[i]);
+        }
+
         public void AddIndividual(Individual individual)
         {
             population.Add(individual);
@@ -24,6 +31,16 @@ namespace lab4_neural
         public Individual GetIndividual(int index)
         {
             return population[index];
+        }
+
+        public int GetPopulationCapacity()
+        {
+            return population.Count;
+        }
+
+        public Individual[] GetPopulation()
+        {
+            return population.ToArray();
         }
 
         public Individual[] GetBestIndividuals()
